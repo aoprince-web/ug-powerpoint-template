@@ -13,7 +13,18 @@ An editable PowerPoint-generation skill for presentations using the University o
 - **Standard template:** `ug-powerpoint-template/assets/UG_Powerpoint_template.pptx`. This is the default used by the JSON builder.
 - **Image-rich alternative:** `ug-powerpoint-template/assets/UG Powerpoint Template - With Images_new.pptx`. This is for students who prefer a template with images and want to adapt its existing visual style. Keep or replace its photos only when they suit the topic and any applicable permissions.
 
-The builder currently uses the standard template automatically. The image-rich file is an optional manual starting point; choosing it is not yet a setting in the JSON specification.
+Choose the starting file in the JSON specification with the optional `template` setting:
+
+```json
+{
+  "template": "image_rich",
+  "slides": [
+    {"type": "title", "title": "My presentation", "author": "Student name"}
+  ]
+}
+```
+
+Use `"template": "standard"` or omit the setting for the standard template. The image-rich setting selects the image-rich PowerPoint as the source file. The builder recreates slides using its supported layouts and custom placements, so it may not preserve every original slide-specific photo or decorative element. Inspect the generated deck; if you need the original designed slides intact, edit the image-rich PowerPoint manually.
 
 ## Required assets
 
