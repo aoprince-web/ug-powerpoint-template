@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+build/
+dist/
+*.pptx
+!ug-powerpoint-template/assets/UG_Powerpoint_template.pptx
