@@ -1,0 +1,24 @@
+{
+  "slides": [
+    {
+      "type": "title",
+      "title": "Waste Literacy and Sustainable Waste Management",
+      "author": "Presenter Name\nUniversity of Ghana"
+    },
+    {
+      "type": "bullets",
+      "title": "Presentation objectives",
+      "bullets": [
+        "Summarise the research problem",
+        "Present the study design and key findings",
+        "Discuss implications and recommendations"
+      ],
+      "notes": "Replace these example points with content grounded in your source material."
+    },
+    {
+      "type": "closing",
+      "title": "Thank you",
+      "author": "Questions"
+    }
+  ]
+}
