@@ -25,8 +25,11 @@ Create editable `.pptx` presentations based on the bundled University of Ghana t
 
 ## Supported JSON specification
 
+Set the optional top-level `template` field to `"standard"` (default) or `"image_rich"` to choose the bundled starting file.
+
 ```json
 {
+  "template": "image_rich",
   "slides": [
     {"type": "title", "title": "Presentation title", "author": "Name\\nDepartment or course"},
     {"type": "bullets", "title": "Main point", "bullets": ["Point", ["Sub point", "Sub point"], "Another point"], "notes": "Optional speaker notes"},
@@ -69,7 +72,8 @@ Every slide may include a `notes` string. In a bullet array, a nested array repr
 ## Files and limitations
 
 - `assets/UG_Powerpoint_template.pptx`: bundled standard source template used by the builder.
-- `assets/UG Powerpoint Template - With Images_new.pptx`: optional image-rich alternative for users who prefer that look; the current builder does not automatically select it.
+- `assets/UG Powerpoint Template - With Images_new.pptx`: optional image-rich starting file selected with `"template": "image_rich"`.
+- Template selection chooses the source presentation file, but the builder recreates slides using its supported layouts and custom placements. It may not preserve all original slide-specific photos or decorative elements. Inspect the result and use the image-rich PowerPoint manually if its original designed slides need to remain intact.
 - `assets/logo_large.png` and `assets/logo_small.png`: crest assets used in title and footer lockups.
 - `scripts/build_deck.py`: JSON-to-PowerPoint builder with input validation and output reopening checks.
 - Only four slide patterns are implemented. Section dividers, native tables, native charts and specialised research layouts are not implemented as dedicated types.
