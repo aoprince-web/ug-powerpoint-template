@@ -18,7 +18,13 @@ from pptx.util import Emu, Pt
 
 HERE = Path(__file__).resolve().parent
 ASSETS = HERE.parent / "assets"
-TEMPLATE = ASSETS / "UG_Powerpoint_template.pptx"
+STANDARD_TEMPLATE = ASSETS / "UG_Powerpoint_template.pptx"
+IMAGE_RICH_TEMPLATE = ASSETS / "UG Powerpoint Template - With Images_new.pptx"
+TEMPLATE = STANDARD_TEMPLATE
+TEMPLATE_OPTIONS = {
+    "standard": STANDARD_TEMPLATE,
+    "image_rich": IMAGE_RICH_TEMPLATE,
+}
 NAVY = RGBColor(0x28, 0x27, 0x81)
 GOLD = RGBColor(0xD2, 0xAB, 0x67)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
@@ -294,7 +300,13 @@ def validate_spec(spec, spec_path):
                 except (OSError, UnidentifiedImageError) as exc:
                     raise ValueError(f"{label}: image is unreadable or unsupported: {image_path} ({exc})") from exc
         if "notes" in sl: require_text(sl["notes"], f"{label} notes", allow_empty=True)
-    for asset in (TEMPLATE, ASSETS / "logo_small.png", ASSETS / "logo_large.png"):
+    template_choice = spec.get("template", "standard")
+    if template_choice not in TEMPLATE_OPTIONS:
+        raise ValueError("'template' must be either 'standard' or 'image_rich'.")
+    selected_template = TEMPLATE_OPTIONS[template_choice]
+    if not selected_template.is_file():
+        raise ValueError(f"Selected template asset is missing: {selected_template}")
+    for asset in (ASSETS / "UG_Powerpoint_template.pptx", ASSETS / "logo_small.png", ASSETS / "logo_large.png"):
         if not asset.is_file(): raise ValueError(f"Required bundled asset is missing: {asset}")
 
 
@@ -308,7 +320,8 @@ def main(spec_path, out_path):
     validate_spec(spec, spec_file)
     if output.suffix.lower() != ".pptx": raise ValueError("Output filename must end in .pptx.")
     output.parent.mkdir(parents=True, exist_ok=True)
-    prs = Presentation(str(TEMPLATE))
+    template_choice = spec.get("template", "standard")
+    prs = Presentation(str(TEMPLATE_OPTIONS[template_choice]))
     for sld_id in list(prs.slides._sldIdLst):
         prs.part.drop_rel(sld_id.rId); prs.slides._sldIdLst.remove(sld_id)
     base = spec_file.resolve().parent
