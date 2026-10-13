@@ -32,6 +32,25 @@ class BuilderTests(unittest.TestCase):
             self.assertEqual(len(prs.slides), 4)
             self.assertTrue(any('Main findings' in sh.text for sh in prs.slides[1].shapes if sh.has_text_frame))
 
+    def test_image_rich_template_option_builds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            result, out = self.run_builder(folder, {
+                'template': 'image_rich',
+                'slides': [{'type':'title','title':'Image-rich option test'}]
+            })
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(len(Presentation(str(out)).slides), 1)
+
+    def test_invalid_template_option_fails_clearly(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result, _ = self.run_builder(Path(tmp), {
+                'template': 'unknown',
+                'slides': [{'type':'title','title':'Invalid template test'}]
+            })
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("'template' must be either 'standard' or 'image_rich'", result.stderr)
+
     def test_missing_bullets_fails_clearly(self):
         with tempfile.TemporaryDirectory() as tmp:
             result, _ = self.run_builder(Path(tmp), {'slides':[{'type':'bullets','title':'Missing bullets'}]})
